@@ -1,7 +1,7 @@
 CREATE DATABASE gamerating;
 
 CREATE TABLE users(
-    user_id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     firstname VARCHAR(100) NOT NULL,
     lastname VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
@@ -10,23 +10,28 @@ CREATE TABLE users(
 );
 
 CREATE TABLE comments(
-    comments_id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     description VARCHAR(255) NOT NULL,
-    stars int,
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    stars INT NOT NULL,
+    userfk INT,
+    FOREIGN KEY (userfk) REFERENCES users(id)
 );
 
 CREATE TABLE reviews(
-    reviews_id SERIAL PRIMARY KEY,
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (comments_id) REFERENCES comments(comments_id),
-    FOREIGN KEY (games_id) REFERENCES games(games_id)
-)
+    id SERIAL PRIMARY KEY,
+    userfk INT,
+    FOREIGN KEY (userfk) REFERENCES users(id),
+    commentsfk INT,
+    FOREIGN KEY (commentsfk) REFERENCES comments(id),
+    gamesfk INT,
+    FOREIGN KEY (gamesfk) REFERENCES games(id)
+);
 
 CREATE TABLE games(
-    games_id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     games VARCHAR(255) NOT NULL,
     rating INT NOT NULL,
     reviews VARCHAR(255) NOT NULL,
-    FOREIGN KEY (reviews_id) REFERENCES reviews(reviews_id)
+    reviewsfk INT,
+    FOREIGN KEY (reviewsfk) REFERENCES reviews(id)
 );
