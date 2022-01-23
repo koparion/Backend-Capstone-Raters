@@ -9,4 +9,15 @@ const pool = new Pool({
     database: `${process.env.DB_DATABASE}`
 })
 
-module.exports = pool;
+const createUser = async (request, response) => {
+    try{
+        const {username, firstname, lastname, password, email, country} = request.body;
+        const newUser = await pool.query("INSERT INTO users (username, firstname, lastname, password, email, country) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *",
+        [username, firstname, lastname, password, email, country]);
+            response.json(newUser.rows[0]);
+        }catch(err){
+            response.status(500).json({error: err.message});
+        }
+    };
+
+module.exports = {createUser};
