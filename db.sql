@@ -6,8 +6,10 @@ CREATE TABLE users(
     lastname VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
     country VARCHAR(100) NOT NULL,
-    username VARCHAR NOT NULL,
-    joindate DATE NOT NULL 
+    username VARCHAR(100) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    joindate DATE NOT NULL,
+    PRIMARY KEY (id) 
 );
 
 CREATE TABLE comments(

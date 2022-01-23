@@ -4,7 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser")
 const compression = require("compression");
 const db = require("./db.js");
-const {response} =  require("express");
+// const {response} =  require("express");
 
 // middleware
 app.use(cors());
@@ -17,7 +17,7 @@ app.get("/", (request, response) =>{
 });
 
 
-app.post("/users", db.createUser); // creating user, function from db.js
+app.post("/register", db.createUser); // creating user, function from db.js
 
 app.listen(5000, () => {
     console.log("server started on 5000");
