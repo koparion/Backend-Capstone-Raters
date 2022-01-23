@@ -41,4 +41,23 @@ const createUser = async (request, response) => {
         }
     };
 
-module.exports = {createUser};
+const loginUser = async (request, response) => {
+    try{
+        const {username, password} = request.body;
+       
+        const user = await pool.query("SELECT * from users WHERE username=$1", [username]);
+
+        const match = await bcrypt.compare(password, user.rows[0].password);
+        if(!match){
+            response.status(400).json({error: "Password is incorrect"});
+            return;
+        }
+        // response.json({success: true, data: user.rows[0]});
+        response.status(200).json({success: true})
+        // response.redirect('/'); // redirecting to front page
+    }catch(err){
+        console.error(err.message);
+    }
+}
+
+module.exports = {createUser, loginUser};

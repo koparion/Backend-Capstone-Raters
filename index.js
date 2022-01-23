@@ -18,6 +18,7 @@ app.get("/", (request, response) =>{
 
 
 app.post("/register", db.createUser); // creating user, function from db.js
+app.post("/login", db.loginUser);
 
 app.listen(5000, () => {
     console.log("server started on 5000");
