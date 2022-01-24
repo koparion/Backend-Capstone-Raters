@@ -13,12 +13,15 @@ app.use(compression());
 app.use(bodyParser.json());
 
 app.get("/", (request, response) =>{
-    response.send("hello world");
+    response.send("hello world, database is connected");
 });
 
 
 app.post("/register", db.createUser); // creating user, function from db.js
-app.post("/login", db.loginUser);
+app.post("/login", db.loginUser); // login user
+app.post("/comments", db.createComment);
+// app.get("/comments/:id", db.userComments);
+app.get("/users",db.users);
 
 app.listen(5000, () => {
     console.log("server started on 5000");
