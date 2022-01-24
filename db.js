@@ -11,6 +11,11 @@ const pool = new Pool({
   database: `${process.env.DB_DATABASE}`,
 });
 
+ssl: {
+    require: true;
+    rejectUnauthorized: false;
+  }
+
 const createUser = async (request, response) => {
   try {
     const {
