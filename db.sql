@@ -9,7 +9,6 @@ CREATE TABLE users(
     username VARCHAR(100) NOT NULL,
     password VARCHAR(100) NOT NULL,
     joindate DATE NOT NULL,
-    PRIMARY KEY (id) 
 );
 
 CREATE TABLE comments(
