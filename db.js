@@ -9,6 +9,7 @@ const pool = new Pool({
   password: `${process.env.DB_PASSWORD}`,
   port: process.env.DB_PORT,
   database: `${process.env.DB_DATABASE}`,
+  connectionString: process.env.DB_URL,
   ssl: {
     require: true,
     rejectUnauthorized: false
