@@ -13,8 +13,9 @@ const pool = new Pool({
     require: true,
     rejectUnauthorized: false
   }
+ 
 });
-
+ 
 
 const createUser = async (request, response) => {
   try {
@@ -86,7 +87,7 @@ const loginUser = async (request, response) => {
   const users = async (request, response) => {
       try{
         const {id} =request.params;
-        const userFetch = await pool.query("SELECT * from users", [id]);
+        const userFetch = await pool.query("SELECT * from users");
 
         response.json(userFetch.rows);
       }catch(err){
