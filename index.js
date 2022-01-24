@@ -23,6 +23,6 @@ app.post("/comments", db.createComment);
 // app.get("/comments/:id", db.userComments);
 app.get("/users",db.users);
 
-app.listen(5000, () => {
+app.listen(process.env.PORT || 5000, () => {
     console.log("server started on 5000");
 });
