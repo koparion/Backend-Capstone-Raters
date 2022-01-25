@@ -19,21 +19,22 @@ CREATE TABLE comments(
     FOREIGN KEY (userfk) REFERENCES users(id)
 );
 
-CREATE TABLE reviews(
-    id SERIAL PRIMARY KEY,
-    userfk INT,
-    FOREIGN KEY (userfk) REFERENCES users(id),
-    commentsfk INT,
-    FOREIGN KEY (commentsfk) REFERENCES comments(id),
-    gamesfk INT,
-    FOREIGN KEY (gamesfk) REFERENCES games(id)
-);
+-- CREATE TABLE reviews(
+--     id SERIAL PRIMARY KEY,
+--     userfk INT,
+--     FOREIGN KEY (userfk) REFERENCES users(id),
+--     commentsfk INT,
+--     FOREIGN KEY (commentsfk) REFERENCES comments(id),
+--     gamesfk INT,
+--     FOREIGN KEY (gamesfk) REFERENCES games(id)
+-- );
 
 CREATE TABLE games(
     id SERIAL PRIMARY KEY,
     games VARCHAR(255) NOT NULL,
+    image PATH,
     rating INT NOT NULL,
-    reviews VARCHAR(255) NOT NULL,
-    reviewsfk INT,
-    FOREIGN KEY (reviewsfk) REFERENCES reviews(id)
+    description VARCHAR(255) NOT NULL,
+    -- reviewsfk INT,
+    -- FOREIGN KEY (reviewsfk) REFERENCES reviews(id)
 );

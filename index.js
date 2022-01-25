@@ -19,15 +19,18 @@ app.get("/", (request, response) =>{
 
 app.post("/register", db.createUser); // creating user, function from db.js
 app.post("/login", db.loginUser); // login user
-app.post("/comments", db.createComment);
+app.post("/comment", db.createComment); // add comment
 // app.get("/comments/:id", db.userComments);
-app.get("/users",db.users);
-
+app.get("/users",db.users); // see all users
+app.get("/comments", db.getComment); // see comment
+app.post("/game", db.addGame); // add game to database
+app.get("/games/:id", db.getGame); // see one game
+app.get("/games", db.getAllGames); // see all games
 // console.log(process.env.DATABASE_URL);
 
 app.listen(process.env.PORT || 5000, () => {
     console.log("server started on 5000");
 });
-app.connect(process.env.DB_URL, () => {
-    console.log("server started on 5000");
-});
+// app.connect(process.env.DB_URL, () => {
+//     console.log("server started on 5000");
+// });

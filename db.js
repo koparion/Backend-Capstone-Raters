@@ -10,14 +10,15 @@ const pool = new Pool({
   port: process.env.DB_PORT,
   database: `${process.env.DB_DATABASE}`,
   connectionString: process.env.DB_URL,
-  ssl: {
-    require: true,
-    rejectUnauthorized: false
-  }
+  
  
 });
- 
+// ssl: {
+//   require: true,
+//   rejectUnauthorized: false
+// }
 
+// create user
 const createUser = async (request, response) => {
   try {
     const {
@@ -63,7 +64,7 @@ const createUser = async (request, response) => {
     response.status(500).json({ error: err.message });
   }
 };
-
+// login user
 const loginUser = async (request, response) => {
   try {
     const { username, password } = request.body;
@@ -84,32 +85,72 @@ const loginUser = async (request, response) => {
     console.error(err.message);
   }
 };
-
+// fetching all users
   const users = async (request, response) => {
       try{
         const {id} =request.params;
-        const userFetch = await pool.query("SELECT * from users");
+        const userFetch = await pool.query("SELECT * FROM users");
 
         response.json(userFetch.rows);
       }catch(err){
         console.error(err.message);
       }
   };
-
+// creating comment
   const createComment = async (request, response) => {
     try {
-      const { description, stars, username} = request.body;
+      const { description, stars, user} = request.body;
       const addComment = await pool.query(
-        // "SELECT * FROM users where username=$1 && INSERT INTO comments(description, stars) VALUES ($1,$2) RETURNING *",
-        // "SELECT * FROM users WHERE username=$1, comments.description AND comments.stars FROM comments JOIN description AND stars ON comments.description AND comments.stars = comments.userfk",
-        "INSERT INTO comments(description, stars) VALUES ($1,$2) SELECT users.id = id JOIN userfk"
-        [description, stars]
+        "INSERT INTO comments(description, stars, userfk) VALUES ($1,$2,$3) RETURNING *"
+        [description, stars, user]
       );
       response.json(addComment.rows[0]);
     } catch (err) {
       response.status(500).json({ error: err.message });
     }
   };
+// fetching comments
+  const getComment = async (request, response) => {
+    try{
+      const comments = await pool.query("SELECT * FROM comments");
+      response.json(comments.rows);
+
+    }catch(err){
+      console.error(err.message);
+    }
+  }
+// adding games
+  const addGame = async (request, response) => {
+    try {
+      const { games, image, description, rating, } = request.body;
+      const addComment = await pool.query(
+        "INSERT INTO games(games, image, description, rating ) VALUES ($1,$2,$3,$4) RETURNING *",
+        [games,image, description, rating]
+      );
+      response.json(addComment.rows[0]);
+    } catch (err) {
+      response.status(500).json({ error: err.message });
+    }
+  };
+  // fetching one game based on id
+  const getGame = async (request, response) => {
+    try{
+      const {id} = request.params;
+      const game = await pool.query("SELECT * FROM games WHERE id = $1",[id]);
+      response.json(game.rows[0]);
+    }catch(err){
+      console.error(err.message);
+    }
+  }
+  // fetching all games
+  const getAllGames = async (request, response) => {
+    try{
+      const game = await pool.query("SELECT * FROM games");
+      response.json(game.rows);
+    }catch(err){
+      console.error(err.message);
+    }
+  }
 
 
-module.exports = { createUser, loginUser, createComment, users };
+module.exports = { createUser, loginUser, createComment, getComment, users, addGame, getGame, getAllGames };
