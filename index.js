@@ -22,6 +22,7 @@ app.post("/login", db.loginUser); // login user
 app.post("/comment", db.createComment); // add comment
 // app.get("/comments/:id", db.userComments);
 app.get("/users",db.users); // see all users
+app.get("/user", db.user); // see one user
 app.get("/comments", db.getComment); // see comment
 app.post("/game", db.addGame); // add game to database
 app.get("/games/:id", db.getGame); // see one game

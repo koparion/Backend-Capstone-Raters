@@ -70,7 +70,7 @@ const loginUser = async (request, response) => {
     const { username, password } = request.body;
 
     const user = await pool.query("SELECT * FROM users WHERE username=$1", [
-      username,
+      username
     ]);
 
     const match = await bcrypt.compare(password, user.rows[0].password);
@@ -96,6 +96,17 @@ const loginUser = async (request, response) => {
         console.error(err.message);
       }
   };
+  // fetching one
+  const user = async (request, response) => {
+    try{
+      const {id} =request.params;
+      const userFetch = await pool.query("SELECT * FROM users WHERE username=$1", [id]);
+
+      response.json(userFetch.rows);
+    }catch(err){
+      console.error(err.message);
+    }
+};
 // creating comment
   const createComment = async (request, response) => {
     try {
@@ -153,4 +164,4 @@ const loginUser = async (request, response) => {
   }
 
 
-module.exports = { createUser, loginUser, createComment, getComment, users, addGame, getGame, getAllGames };
+module.exports = { createUser, loginUser, createComment, getComment, user, users, addGame, getGame, getAllGames };
