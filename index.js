@@ -19,10 +19,20 @@ app.get("/", (request, response) =>{
 
 app.post("/register", db.createUser); // creating user, function from db.js
 app.post("/login", db.loginUser); // login user
-app.post("/comments", db.createComment);
-// app.get("/comments/:id", db.userComments);
+//app.post("/comments", db.createComment);//create comment
+
+
+app.post("/comments", db.createComment)
+
+
+
 app.get("/users",db.users);
+app.get("/comments",db.comments);//fetching comments
+
+app.delete("/comments/:id",db.deleteComment)//delete comment
+
+app.put("/comments/:id",db.updateComment) //update comment
 
 app.listen(5000, () => {
-    console.log("server started on 5000");
+    console.log("server started on 5000!");
 });

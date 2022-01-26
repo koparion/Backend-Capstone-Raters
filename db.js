@@ -3,17 +3,13 @@ const Pool = require("pg").Pool;
 const bcrypt = require("bcrypt");
 const { emailValidation } = require("./validation");
 
-const pool = new Pool({
-  host: `${process.env.DB_HOST}`,
-  user: `${process.env.DB_USER}`,
-  password: `${process.env.DB_PASSWORD}`,
-  port: process.env.DB_PORT,
-  database: `${process.env.DB_DATABASE}`,
-  ssl: {
-    require: true,
-    rejectUnauthorized: false
-  }
-});
+const pool = new Pool ({
+  user: "postgres",
+  password: "Lunchbox",
+  host: "localhost",
+  port: 5432,
+  database: "gamerating"
+})
 
 
 const createUser = async (request, response) => {
@@ -85,8 +81,8 @@ const loginUser = async (request, response) => {
 
   const users = async (request, response) => {
       try{
-        const {id} =request.params;
-        const userFetch = await pool.query("SELECT * from users", [id]);
+        // const {id} =request.params;
+        const userFetch = await pool.query("SELECT * from users");
 
         response.json(userFetch.rows);
       }catch(err){
@@ -94,14 +90,22 @@ const loginUser = async (request, response) => {
       }
   };
 
+  const comments = async (request, response) => {
+    try{
+      const comList = await pool.query("SELECT * from comments");
+
+      response.json(comList.rows);
+    }catch(err){
+      console.error(err.message);
+    }
+};
+
   const createComment = async (request, response) => {
     try {
-      const { description, stars, username} = request.body;
+      const {descript} = request.body;
       const addComment = await pool.query(
-        // "SELECT * FROM users where username=$1 && INSERT INTO comments(description, stars) VALUES ($1,$2) RETURNING *",
-        // "SELECT * FROM users WHERE username=$1, comments.description AND comments.stars FROM comments JOIN description AND stars ON comments.description AND comments.stars = comments.userfk",
-        "INSERT INTO comments(description, stars) VALUES ($1,$2) SELECT users.id = id JOIN userfk"
-        [description, stars]
+        "INSERT INTO comments (description) VALUES($1) RETURNING *",
+        [descript]
       );
       response.json(addComment.rows[0]);
     } catch (err) {
@@ -110,4 +114,33 @@ const loginUser = async (request, response) => {
   };
 
 
-module.exports = { createUser, loginUser, createComment, users };
+  const deleteComment = async (request,response) => {
+    try {
+      const {id} = request.params
+        const deleteComm = await pool.query("DELETE FROM comments WHERE id = $1", [id])
+        response.json(deleteComm)
+    } catch (err) {
+      console.error(err.message)
+    }
+  }
+
+
+  const updateComment= async (request,response) => {
+
+    try
+    {
+        const {id} = request.params
+        const {description} = request.body
+        const updateCom = await pool.query("UPDATE comments SET description = $1 WHERE id = $2", [description,id])
+        res.json("updated Comment")
+    }
+    catch (err)
+    {
+        console.error(err.message)
+    }
+
+
+}
+
+
+module.exports = { createUser, loginUser, createComment, users , comments, deleteComment, updateComment};
