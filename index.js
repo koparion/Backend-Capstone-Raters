@@ -16,14 +16,18 @@ app.get("/", (request, response) =>{
     response.send("hello world, database is connected");
 });
 
-
 app.post("/register", db.createUser); // creating user, function from db.js
 app.post("/login", db.loginUser); // login user
-app.post("/comment", db.createComment); // add comment
-// app.get("/comments/:id", db.userComments);
 app.get("/users",db.users); // see all users
 app.get("/user", db.user); // see one user
-app.get("/comments", db.getComment); // see comment
+
+app.post("/comment", db.createComment); // add comment
+app.get("/comments/:id", db.getOneComment);
+app.get("/comments", db.getComment); // see all comment
+app.delete("/comments/:id", db.deleteComment);
+app.put("/comments/:id", db.updateComment);
+
+
 app.post("/game", db.addGame); // add game to database
 app.get("/games/:id", db.getGame); // see one game
 app.get("/games", db.getAllGames); // see all games

@@ -10,8 +10,6 @@ const pool = new Pool({
   port: process.env.DB_PORT,
   database: `${process.env.DB_DATABASE}`,
   connectionString: process.env.DB_URL,
-  
- 
 });
 // ssl: {
 //   require: true,
@@ -70,7 +68,7 @@ const loginUser = async (request, response) => {
     const { username, password } = request.body;
 
     const user = await pool.query("SELECT * FROM users WHERE username=$1", [
-      username
+      username,
     ]);
 
     const match = await bcrypt.compare(password, user.rows[0].password);
@@ -86,82 +84,135 @@ const loginUser = async (request, response) => {
   }
 };
 // fetching all users
-  const users = async (request, response) => {
-      try{
-        const {id} =request.params;
-        const userFetch = await pool.query("SELECT * FROM users");
+const users = async (request, response) => {
+  try {
+    const { id } = request.params;
+    const userFetch = await pool.query("SELECT * FROM users");
 
-        response.json(userFetch.rows);
-      }catch(err){
-        console.error(err.message);
-      }
-  };
-  // fetching one
-  const user = async (request, response) => {
-    try{
-      const {id} =request.params;
-      const userFetch = await pool.query("SELECT * FROM users WHERE username=$1", [id]);
+    response.json(userFetch.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+// fetching one
+const user = async (request, response) => {
+  try {
+    const { id } = request.params;
+    const userFetch = await pool.query(
+      "SELECT * FROM users WHERE username=$1",
+      [id]
+    );
 
-      response.json(userFetch.rows);
-    }catch(err){
-      console.error(err.message);
-    }
+    response.json(userFetch.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
 };
 // creating comment
-  const createComment = async (request, response) => {
-    try {
-      const { description, stars, user} = request.body;
-      const addComment = await pool.query(
-        "INSERT INTO comments(description, stars, userfk) VALUES ($1,$2,$3) RETURNING *"
-        [description, stars, user]
-      );
-      response.json(addComment.rows[0]);
-    } catch (err) {
-      response.status(500).json({ error: err.message });
-    }
-  };
+const createComment = async (request, response) => {
+  try {
+    const { description } = request.body;
+    const addComment = await pool.query(
+      "INSERT INTO comments(description) VALUES($1) RETURNING *",[
+        description
+      ]
+    );
+    response.json(addComment.rows[0]);
+  } catch (err) {
+    response.status(500).json({ error: err.message });
+  }
+};
 // fetching comments
-  const getComment = async (request, response) => {
-    try{
-      const comments = await pool.query("SELECT * FROM comments");
-      response.json(comments.rows);
-
-    }catch(err){
-      console.error(err.message);
-    }
+const getComment = async (request, response) => {
+  try {
+    const comments = await pool.query("SELECT * FROM comments");
+    response.json(comments.rows);
+  } catch (err) {
+    console.error(err.message);
   }
+};
+// fetch one comment
+const getOneComment = async (request, response) => {
+  try {
+    const { id } = request.params;
+    const getOne = await pool.query("SELECT * FROM comments WHERE id = $1", [
+      id,
+    ]);
+    response.json(getOne.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+// delete comment
+const deleteComment = async (request, response) => {
+  try {
+    const { id } = request.params;
+    const deleteRow = await pool.query("DELETE FROM comments WHERE id = $1", [
+      id,
+    ]);
+    response.json("Row deleted");
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+// update comment
+const updateComment = async (request, response) => {
+  try {
+    const { id } = request.params;
+    const { description } = request.body;
+    const updateTable = await pool.query(
+      "UPDATE comments SET description = $1 WHERE id = $2",
+      [description, id]
+    ); 
+    response.json("table was updated");
+  } catch (err) {
+    console.error(err.message);
+  }
+};
 // adding games
-  const addGame = async (request, response) => {
-    try {
-      const { games, image, description, rating, } = request.body;
-      const addComment = await pool.query(
-        "INSERT INTO games(games, image, description, rating ) VALUES ($1,$2,$3,$4) RETURNING *",
-        [games,image, description, rating]
-      );
-      response.json(addComment.rows[0]);
-    } catch (err) {
-      response.status(500).json({ error: err.message });
-    }
-  };
-  // fetching one game based on id
-  const getGame = async (request, response) => {
-    try{
-      const {id} = request.params;
-      const game = await pool.query("SELECT * FROM games WHERE id = $1",[id]);
-      response.json(game.rows[0]);
-    }catch(err){
-      console.error(err.message);
-    }
+const addGame = async (request, response) => {
+  try {
+    const { games, image, description, rating } = request.body;
+    const addComment = await pool.query(
+      "INSERT INTO games(games, image, description, rating ) VALUES ($1,$2,$3,$4) RETURNING *",
+      [games, image, description, rating]
+    );
+    response.json(addComment.rows[0]);
+  } catch (err) {
+    response.status(500).json({ error: err.message });
   }
-  // fetching all games
-  const getAllGames = async (request, response) => {
-    try{
-      const game = await pool.query("SELECT * FROM games");
-      response.json(game.rows);
-    }catch(err){
-      console.error(err.message);
-    }
+};
+// fetching one game based on id
+const getGame = async (request, response) => {
+  try {
+    const { id } = request.params;
+    const game = await pool.query("SELECT * FROM games WHERE id = $1", [id]);
+    response.json(game.rows[0]);
+  } catch (err) {
+    console.error(err.message);
   }
+};
+// fetching all games
+const getAllGames = async (request, response) => {
+  try {
+    const game = await pool.query("SELECT * FROM games");
+    response.json(game.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+};
 
-
-module.exports = { createUser, loginUser, createComment, getComment, user, users, addGame, getGame, getAllGames };
+module.exports = {
+  createUser,
+  loginUser,
+  createComment,
+  getOneComment,
+  getComment,
+  deleteComment,
+  updateComment,
+  user,
+  users,
+  addGame,
+  getGame,
+  getAllGames,
+};
