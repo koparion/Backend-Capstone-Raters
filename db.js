@@ -126,7 +126,7 @@ const createComment = async (request, response) => {
 // fetching comments
 const getComment = async (request, response) => {
   try {
-    const comments = await pool.query("SELECT id, description, to_char(date, 'YYYY-MM-DD') as date FROM comments");
+    const comments = await pool.query("SELECT * FROM comments");
     response.json(comments.rows);
   } catch (err) {
     console.error(err.message);
