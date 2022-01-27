@@ -29,7 +29,7 @@ app.put("/comments/:id", db.updateComment);
 
 
 app.post("/game", db.addGame); // add game to database
-app.get("/games/:username", db.getGame); // see one game
+app.get("/games/:id", db.getGame); // see one game
 app.get("/games", db.getAllGames); // see all games
 // console.log(process.env.DATABASE_URL);
 
