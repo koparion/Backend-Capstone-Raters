@@ -8,8 +8,7 @@ const pool = new Pool({
   user: `${process.env.DB_USER}`,
   password: `${process.env.DB_PASSWORD}`,
   port: process.env.DB_PORT,
-  database: `${process.env.DB_DATABASE}`,
-  connectionString: process.env.DB_URL,
+  database: `${process.env.DB_SCHEMA}`,
   ssl: {
   require: true,
   rejectUnauthorized: false
