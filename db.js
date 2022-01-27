@@ -27,7 +27,6 @@ const createUser = async (request, response) => {
       password,
       email,
       country,
-      joindate,
     } = request.body;
     //validating email
     if (!emailValidation(email)) {
@@ -69,7 +68,7 @@ const loginUser = async (request, response) => {
     // const { username, password } = request.body;
     const username = request.body.username;
     const pass = request.body.password;
-    const login = await pool.query("SELECT * FROM users username=? AND password=? VALUES($1,$2)", [username, password]);
+    const login = await pool.query("SELECT * FROM users username=? AND password=? VALUES($1,$2)", [username, pass]);
     // const user = await pool.query("SELECT * FROM users WHERE username=$1", [
     //   username
     // ]);
