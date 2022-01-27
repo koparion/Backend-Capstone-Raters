@@ -82,7 +82,7 @@ const loginUser = async (request, response) => {
     response.status(200).json({ success: true });
     // response.redirect('/'); // redirecting to front page
   } catch (err) {
-    console.error(err.message);
+    response.status(500).json({ error: err.message });
   }
 };
 // fetching all users
@@ -93,7 +93,7 @@ const users = async (request, response) => {
 
     response.json(userFetch.rows);
   } catch (err) {
-    console.error(err.message);
+    response.status(500).json({ error: err.message });
   }
 };
 // fetching one
