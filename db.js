@@ -104,7 +104,7 @@ const user = async (request, response) => {
 
     response.json(userFetch.rows);
   } catch (err) {
-    console.error(err.message);
+    response.status(500).json({ error: err.message });
   }
 };
 // creating comment
@@ -127,7 +127,7 @@ const getComment = async (request, response) => {
     const comments = await pool.query("SELECT * FROM comments");
     response.json(comments.rows);
   } catch (err) {
-    console.error(err.message);
+    response.status(500).json({ error: err.message });
   }
 };
 // fetch one comment
@@ -139,7 +139,7 @@ const getOneComment = async (request, response) => {
     ]);
     response.json(getOne.rows[0]);
   } catch (err) {
-    console.error(err.message);
+    response.status(500).json({ error: err.message });
   }
 };
 // delete comment
@@ -151,7 +151,7 @@ const deleteComment = async (request, response) => {
     ]);
     response.json("Row deleted");
   } catch (err) {
-    console.log(err.message);
+    response.status(500).json({ error: err.message });
   }
 };
 // update comment
@@ -165,7 +165,7 @@ const updateComment = async (request, response) => {
     ); 
     response.json("table was updated");
   } catch (err) {
-    console.error(err.message);
+    response.status(500).json({ error: err.message });
   }
 };
 // adding games
@@ -188,7 +188,7 @@ const getGame = async (request, response) => {
     const game = await pool.query("SELECT * FROM games WHERE id = $1", [id]);
     response.json(game.rows[0]);
   } catch (err) {
-    console.error(err.message);
+    response.status(500).json({ error: err.message });
   }
 };
 // fetching all games
@@ -197,7 +197,7 @@ const getAllGames = async (request, response) => {
     const game = await pool.query("SELECT * FROM games");
     response.json(game.rows);
   } catch (err) {
-    console.error(err.message);
+    response.status(500).json({ error: err.message });
   }
 };
 
