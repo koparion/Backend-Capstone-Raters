@@ -88,7 +88,7 @@ const loginUser = async (request, response) => {
 const users = async (request, response) => {
   try {
     const { id } = request.params;
-    const userFetch = await pool.query("SELECT * FROM users");
+    const userFetch = await pool.query("SELECT id, firstname, lastname, email, country, username, password, to_char(joindate, 'YYYY-MM-DD') as joindate FROM users");
 
     response.json(userFetch.rows);
   } catch (err) {
