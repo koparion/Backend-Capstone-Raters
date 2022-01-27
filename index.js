@@ -17,7 +17,7 @@ app.get("/", (request, response) =>{
 });
 
 app.post("/register", db.createUser); // creating user, function from db.js
-app.options("/login/", db.loginUser); // login user
+app.options("/login/:id", db.loginUser); // login user
 app.get("/users",db.users); // see all users
 app.get("/user", db.user); // see one user
 
