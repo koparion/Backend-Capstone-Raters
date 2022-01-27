@@ -66,10 +66,13 @@ const createUser = async (request, response) => {
 // login user
 const loginUser = async (request, response) => {
   try {
-    const { username, password } = request.body;
-    const user = await pool.query("SELECT * FROM users WHERE username=$1", [
-      username
-    ]);
+    // const { username, password } = request.body;
+    const username = request.body.username;
+    const pass = request.body.password;
+    const login = await pool.query("SELECT * FROM users username=? AND password=? VALUES($1,$2)", [username, password]);
+    // const user = await pool.query("SELECT * FROM users WHERE username=$1", [
+    //   username
+    // ]);
     const match = await bcrypt.compare(password, user.rows[0].password);
     if (!match) {
       response.status(400).json({ error: "Password is incorrect" });
