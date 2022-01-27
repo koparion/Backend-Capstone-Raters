@@ -17,7 +17,7 @@ app.get("/", (request, response) =>{
 });
 
 app.post("/register", db.createUser); // creating user, function from db.js
-app.post("/login", db.loginUser); // login user
+app.post("/login/:id", db.loginUser); // login user
 app.get("/users",db.users); // see all users
 app.get("/user", db.user); // see one user
 
@@ -29,7 +29,7 @@ app.put("/comments/:id", db.updateComment);
 
 
 app.post("/game", db.addGame); // add game to database
-app.get("/games/:id", db.getGame); // see one game
+app.get("/games/:username", db.getGame); // see one game
 app.get("/games", db.getAllGames); // see all games
 // console.log(process.env.DATABASE_URL);
 

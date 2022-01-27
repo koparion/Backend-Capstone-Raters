@@ -10,11 +10,13 @@ const pool = new Pool({
   port: process.env.DB_PORT,
   database: `${process.env.DB_DATABASE}`,
   connectionString: process.env.DB_URL,
+  ssl: {
+  require: true,
+  rejectUnauthorized: false
+}
+
 });
-// ssl: {
-//   require: true,
-//   rejectUnauthorized: false
-// }
+
 
 // create user
 const createUser = async (request, response) => {
@@ -113,7 +115,7 @@ const createComment = async (request, response) => {
   try {
     const { description } = request.body;
     const addComment = await pool.query(
-      "INSERT INTO comments(description) VALUES($1) RETURNING *",[
+      "INSERT INTO comments(description, date) VALUES($1,now()) RETURNING *",[
         description
       ]
     );
