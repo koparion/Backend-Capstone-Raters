@@ -21,7 +21,7 @@ app.post("/login/:username", db.loginUser); // login user
 app.get("/users",db.users); // see all users
 app.get("/user", db.user); // see one user
 
-app.post("/comment", db.createComment); // add comment
+app.post("/comments", db.createComment); // add comment
 app.get("/comments/:id", db.getOneComment);
 app.get("/comments", db.getComment); // see all comment
 app.delete("/comments/:id", db.deleteComment);

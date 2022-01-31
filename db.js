@@ -8,14 +8,15 @@ const pool = new Pool({
   user: `${process.env.DB_USER}`,
   password: `${process.env.DB_PASSWORD}`,
   port: process.env.DB_PORT,
-  database: `${process.env.DB_SCHEMA}`,
-  ssl: {
-  require: true,
-  rejectUnauthorized: false
-}
+  database: `${process.env.DB_SCHEMA}`
+ 
+
 
 });
 
+// ssl: {
+//   require: true,
+//   rejectUnauthorized: false
 
 // create user
 const createUser = async (request, response) => {
@@ -27,6 +28,7 @@ const createUser = async (request, response) => {
       password,
       email,
       country,
+      joindate
     } = request.body;
     //validating email
     if (!emailValidation(email)) {
