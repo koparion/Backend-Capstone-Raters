@@ -1,10 +1,14 @@
 const express = require("express");
+const exphbs = require('express-handlebars');
+const path = require('path');
 const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser")
 const compression = require("compression");
 const db = require("./db.js");
+
 // const {response} =  require("express");
+
 
 // middleware
 app.use(cors());
@@ -32,6 +36,8 @@ app.post("/game", db.addGame); // add game to database
 app.get("/games/:id", db.getGame); // see one game
 app.get("/games", db.getAllGames); // see all games
 // console.log(process.env.DATABASE_URL);
+
+
 
 app.listen(process.env.PORT || 5000, () => {
     console.log("server started on 5000");

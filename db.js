@@ -2,24 +2,13 @@ require("dotenv").config();
 const Pool = require("pg").Pool;
 const bcrypt = require("bcrypt");
 const { emailValidation } = require("./validation");
+const { Sequelize } = require('sequelize');
 
-const pool = new Pool({
-  host: `${process.env.DB_HOST}`,
-  user: `${process.env.DB_USER}`,
-  password: `${process.env.DB_PASSWORD}`,
-  port: process.env.DB_PORT,
-  database: `${process.env.DB_SCHEMA}`
- 
+const sequelize = new Sequelize(process.env.DB_URL) // connecting to database
 
-
-});
-
-// ssl: {
-//   require: true,
-//   rejectUnauthorized: false
 
 // create user
-const createUser = async (request, response) => {
+const createUser = async (request, response) =>{
   try {
     const {
       username,
