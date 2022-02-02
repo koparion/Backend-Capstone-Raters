@@ -11,7 +11,10 @@ const pool = new Pool({
   password: `${process.env.DB_PASSWORD}`,
   port: process.env.DB_PORT,
   database: `${process.env.DB_DATABASE}`,
- 
+  ssl: {
+    require: true,
+    rejectUnauthorized: false
+  }
 });
 
 // create user
