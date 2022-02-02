@@ -38,7 +38,7 @@ app.get("/games", db.getAllGames); // see all games
 // console.log(process.env.DATABASE_URL);
 
 
-app.connect(process.env.DB_URL);
+// app.connect(process.env.DB_URL);
 
 app.listen(process.env.PORT || 5000, () => {
     console.log("server started on 5000");

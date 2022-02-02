@@ -2,10 +2,17 @@ require("dotenv").config();
 const Pool = require("pg").Pool;
 const bcrypt = require("bcrypt");
 const { emailValidation } = require("./validation");
-const { Sequelize } = require('sequelize');
+// const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize(process.env.DB_URL) // connecting to database
-
+// const sequelize = new Sequelize(process.env.DB_URL) // connecting to database
+const pool = new Pool({
+  host: `${process.env.DB_HOST}`,
+  user: `${process.env.DB_USER}`,
+  password: `${process.env.DB_PASSWORD}`,
+  port: process.env.DB_PORT,
+  database: `${process.env.DB_DATABASE}`,
+ 
+});
 
 // create user
 const createUser = async (request, response) =>{
@@ -56,13 +63,12 @@ const createUser = async (request, response) =>{
 // login user
 const loginUser = async (request, response) => {
   try {
-    // const { username, password } = request.body;
-    const username = request.body.username;
-    const pass = request.body.password;
-    const login = await pool.query("SELECT * FROM users username=? AND password=? VALUES($1,$2)", [username, pass]);
-    // const user = await pool.query("SELECT * FROM users WHERE username=$1", [
-    //   username
-    // ]);
+    const { username, password } = request.body;
+
+    const user = await pool.query("SELECT * FROM users WHERE username=$1", [
+      username,
+    ]);
+
     const match = await bcrypt.compare(password, user.rows[0].password);
     if (!match) {
       response.status(400).json({ error: "Password is incorrect" });
