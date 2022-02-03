@@ -126,7 +126,7 @@ const createComment = async (request, response) => {
 const getComment = async (request, response) => {
   try {
     // const comments = await pool.query("SELECT * FROM comments");
-    const comments = await pool.query("SELECT id, description, CONVERT(varchar(20), date, 103),currentuser from comments");
+    const comments = await pool.query("SELECT id, description, CONVERT(varchar(20), date, 103) as date,currentuser from comments");
     response.json(comments.rows);
   } catch (err) {
     response.status(500).json({ error: err.message });
