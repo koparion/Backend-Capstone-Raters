@@ -14,20 +14,12 @@ CREATE TABLE users(
 CREATE TABLE comments(
     id SERIAL PRIMARY KEY,
     description VARCHAR(255) NOT NULL,
+    currentUser VARCHAR(255) NOT NULL,
     -- stars INT NOT NULL,
     -- userfk INT,
     -- FOREIGN KEY (userfk) REFERENCES users(id)
 );
 
--- CREATE TABLE reviews(
---     id SERIAL PRIMARY KEY,
---     userfk INT,
---     FOREIGN KEY (userfk) REFERENCES users(id),
---     commentsfk INT,
---     FOREIGN KEY (commentsfk) REFERENCES comments(id),
---     gamesfk INT,
---     FOREIGN KEY (gamesfk) REFERENCES games(id)
--- );
 
 CREATE TABLE games(
     id SERIAL PRIMARY KEY,

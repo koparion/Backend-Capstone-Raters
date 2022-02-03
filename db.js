@@ -15,6 +15,8 @@ const pool = new Pool({
   }
 });
 
+let currUser = "";
+
 // create user
 const createUser = async (request, response) =>{
   try {
@@ -75,6 +77,7 @@ const loginUser = async (request, response) => {
       response.status(400).json({ error: "Password is incorrect" });
       return;
     }
+    currUser = user.rows[0].username;
     // response.json({success: true, data: user.rows[0]});
     response.status(200).json({ success: true });
     // response.redirect('/'); // redirecting to front page
@@ -111,7 +114,7 @@ const createComment = async (request, response) => {
   try {
     const { description } = request.body;
     const addComment = await pool.query(
-      "INSERT INTO comments(description, date) VALUES($1,now()) RETURNING *",[
+      "INSERT INTO comments(description, currentUser, date) VALUES($1, $2, now()) RETURNING *",[
         description
       ]
     );
