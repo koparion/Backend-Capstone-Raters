@@ -8,18 +8,14 @@ CREATE TABLE users(
     country VARCHAR(100) NOT NULL,
     username VARCHAR(100) NOT NULL,
     password VARCHAR(100) NOT NULL,
-    joindate DATE NOT NULL,
+    joindate DATE NOT NULL
 );
 
 CREATE TABLE comments(
     id SERIAL PRIMARY KEY,
     description VARCHAR(255) NOT NULL,
-    currentUser VARCHAR(255) NOT NULL,
-    -- stars INT NOT NULL,
-    -- userfk INT,
-    -- FOREIGN KEY (userfk) REFERENCES users(id)
+    currentUser VARCHAR(255) NOT NULL       --changeeedddddd @justin
 );
-
 
 CREATE TABLE games(
     id SERIAL PRIMARY KEY,

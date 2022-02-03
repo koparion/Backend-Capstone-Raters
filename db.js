@@ -4,18 +4,19 @@ const bcrypt = require("bcrypt");
 const { emailValidation } = require("./validation");
 
 const pool = new Pool({
-  host: `${process.env.DB_HOST}`,
-  user: `${process.env.DB_USER}`,
-  password: `${process.env.DB_PASSWORD}`,
-  port: process.env.DB_PORT,
-  database: `${process.env.DB_DATABASE}`,
-  ssl: {
-    require: true,
-    rejectUnauthorized: false
-  }
+  user:"postgres",
+    password:"Peanacho10",         ////////////changedd @justinnnnn
+    host:"localhost",
+    port:5432,
+    database:"gamerating",
+  // ssl: {
+  //   require: true,
+  //   rejectUnauthorized: false
+  // }
 });
 
-let currUser = "";
+
+let currUser = "";     ///////////////// changed @justinnnnnnnn
 
 // create user
 const createUser = async (request, response) =>{
@@ -77,8 +78,7 @@ const loginUser = async (request, response) => {
       response.status(400).json({ error: "Password is incorrect" });
       return;
     }
-    currUser = user.rows[0].username;
-    // response.json({success: true, data: user.rows[0]});
+    currUser = user.rows[0].username;    /////////////////changeddddd @justin
     response.status(200).json({ success: true });
     // response.redirect('/'); // redirecting to front page
   } catch (err) {
@@ -89,7 +89,6 @@ const loginUser = async (request, response) => {
 const users = async (request, response) => {
   try {
     const userFetch = await pool.query("SELECT * FROM users");
-    // const userFetch = await pool.query("SELECT id, firstname, lastname, email, country, username, password, to_char(joindate, 'YYYY-MM-DD') as joindate FROM users");
     response.json(userFetch.rows);
   } catch (err) {
     response.status(500).json({ error: err.message });
@@ -114,11 +113,11 @@ const createComment = async (request, response) => {
   try {
     const { description } = request.body;
     const addComment = await pool.query(
-      "INSERT INTO comments(description, currentUser, date) VALUES($1, $2, now()) RETURNING *",[
-        description
+      "INSERT INTO comments (description, currentUser) VALUES ($1, $2) RETURNING *",[ ///////////////// changeddddd @justin
+        description, currUser //////////////// changed @justin
       ]
     );
-    response.json(addComment.rows[0]);
+    response.json(addComment.rows);
   } catch (err) {
     response.status(500).json({ error: err.message });
   }
@@ -148,9 +147,7 @@ const getOneComment = async (request, response) => {
 const deleteComment = async (request, response) => {
   try {
     const { id } = request.params;
-    const deleteRow = await pool.query("DELETE FROM comments WHERE id = $1", [
-      id,
-    ]);
+    const deleteRow = await pool.query("DELETE FROM comments WHERE id = $1", [id]);
     response.json("Row deleted");
   } catch (err) {
     response.status(500).json({ error: err.message });
