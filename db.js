@@ -9,12 +9,11 @@ const pool = new Pool({
   password: `${process.env.DB_PASSWORD}`,
   port: process.env.DB_PORT,
   database: `${process.env.DB_DATABASE}`,
-  ssl: {
-    require: true,
-    rejectUnauthorized: false
-  }
+  // ssl: {
+  //   require: true,
+  //   rejectUnauthorized: false
+  // }
 });
-
 // create user
 const createUser = async (request, response) =>{
   try {
@@ -61,6 +60,8 @@ const createUser = async (request, response) =>{
     response.status(500).json({ error: err.message });
   }
 };
+
+let currUser = "";
 // login user
 const loginUser = async (request, response) => {
   try {
@@ -76,6 +77,7 @@ const loginUser = async (request, response) => {
       return;
     }
     // response.json({success: true, data: user.rows[0]});
+    currUser = user.rows[0].username;
     response.status(200).json({ success: true });
     // response.redirect('/'); // redirecting to front page
   } catch (err) {
@@ -111,11 +113,12 @@ const createComment = async (request, response) => {
   try {
     const { description } = request.body;
     const addComment = await pool.query(
-      "INSERT INTO comments(description, date) VALUES($1,now()) RETURNING *",[
-        description
+      "INSERT INTO comments(description, currentUser, date) VALUES($1,$2,now()) RETURNING *",[
+        description, currUser, date
       ]
     );
-    response.json(addComment.rows[0]);
+    // response.json(addComment.rows[0]);
+    response.json(addComment.rows);
   } catch (err) {
     response.status(500).json({ error: err.message });
   }
