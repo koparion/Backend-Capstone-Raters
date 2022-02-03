@@ -112,8 +112,8 @@ const createComment = async (request, response) => {
   try {
     const { description } = request.body;
     const addComment = await pool.query(
-      "INSERT INTO comments(description, currentUser) VALUES($1,$2)RETURNING *",[
-        description, currUser, date
+      "INSERT INTO comments(description, currentUser, date) VALUES($1,$2,now()) RETURNING *",[
+        description, currUser
       ]
     );
     response.json(addComment.rows[0]);
