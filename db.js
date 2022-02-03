@@ -112,7 +112,7 @@ const createComment = async (request, response) => {
   try {
     const { description } = request.body;
     const addComment = await pool.query(
-      "INSERT INTO comments(description, currentUser) VALUES($1,$2)  FORMAT (getdate(), 'MMM dd yyyy') as date RETURNING *",[
+      "INSERT INTO comments(description, currentUser) VALUES($1,$2)RETURNING *",[
         description, currUser, date
       ]
     );
