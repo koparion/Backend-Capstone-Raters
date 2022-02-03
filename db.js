@@ -48,7 +48,6 @@ const createUser = async (request, response) =>{
       response.status(400).json({ error: "User already exists" });
       return;
     }
-
     const salt = await bcrypt.genSalt(10); // adding layer of security
     const hashedPassword = await bcrypt.hash(password, salt); // hashing the password
     const newUser = await pool.query(
