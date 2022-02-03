@@ -9,10 +9,10 @@ const pool = new Pool({
   password: `${process.env.DB_PASSWORD}`,
   port: process.env.DB_PORT,
   database: `${process.env.DB_DATABASE}`,
-  ssl: {
-    require: true,
-    rejectUnauthorized: false
-  }
+  // ssl: {
+  //   require: true,
+  //   rejectUnauthorized: false
+  // }
 });
 // create user
 const createUser = async (request, response) =>{
@@ -112,7 +112,7 @@ const createComment = async (request, response) => {
   try {
     const { description } = request.body;
     const addComment = await pool.query(
-      "INSERT INTO comments(description, currentUser, date) VALUES($1,$2,now()) RETURNING *",[
+      "INSERT INTO comments(description, currentUser, date) VALUES($1,$2,now()::date) RETURNING *",[
         description, currUser
       ]
     );
@@ -126,7 +126,8 @@ const createComment = async (request, response) => {
 const getComment = async (request, response) => {
   try {
     // const comments = await pool.query("SELECT * FROM comments");
-    const comments = await pool.query("SELECT id, description, CONVERT(date, getDate(), 126) AS date, currentuser from comments");
+    // const comments = await pool.query("SELECT id, description, currentuser, FORMAT(date, 'd', 'en-us') AS date from comments");
+    const comments = await pool.query("SELECT id, description, currentuser, FORMAT(date,DATE) from comments");
     response.json(comments.rows);
   } catch (err) {
     response.status(500).json({ error: err.message });
