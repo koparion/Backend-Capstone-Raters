@@ -112,12 +112,12 @@ const createComment = async (request, response) => {
   try {
     const { description } = request.body;
     const addComment = await pool.query(
-      "INSERT INTO comments(description, currentUser, date) VALUES($1,$2,now()) RETURNING *",[
+      "INSERT INTO comments(description, currentUser) VALUES($1,$2,now()) RETURNING *",[
         description, currUser, date
       ]
     );
-    // response.json(addComment.rows[0]);
-    response.json(addComment.rows);
+    response.json(addComment.rows[0]);
+    // response.json(addComment.rows);
   } catch (err) {
     response.status(500).json({ error: err.message });
   }
@@ -125,7 +125,7 @@ const createComment = async (request, response) => {
 // fetching comments
 const getComment = async (request, response) => {
   try {
-    const comments = await pool.query("SELECT * FROM comments");
+    const comments = await pool.query("SELECT description,currentUser, FORMAT (getdate(), 'MMM dd yyyy') as date FROM comments");
     response.json(comments.rows);
   } catch (err) {
     response.status(500).json({ error: err.message });
