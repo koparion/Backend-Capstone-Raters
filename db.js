@@ -116,8 +116,8 @@ const createComment = async (request, response) => {
         description, currUser
       ]
     );
-    response.json(addComment.rows[0]);
-    // response.json(addComment.rows);
+    // response.json(addComment.rows[0]);
+    response.json(addComment.rows);
   } catch (err) {
     response.status(500).json({ error: err.message });
   }
